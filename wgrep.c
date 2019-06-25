@@ -10,16 +10,18 @@ int main(int argc, char *argv[]) {
   else if(argc >= 2) {
     char *searchterm = argv[1]; 
 
-    char **output = calloc(0, sizeof(char *));
-    size_t size = 0;
-
-    char *text = calloc(1, 1);
-    char buffer[10];
+   
 
     FILE *stream;
     size_t currentArgv = 0;
 
     for(; currentArgv < argc; currentArgv++) {
+      char **output = calloc(0, sizeof(char *));
+      size_t size = 0;
+
+      char *text = calloc(1, 1);
+      char buffer[10];
+
       if(argc == 2) {
         stream = stdin;
       }
@@ -31,6 +33,7 @@ int main(int argc, char *argv[]) {
           return 1;
         }
       }
+
       while(fgets(buffer, sizeof(buffer), stream)) {
         text = realloc(text, strlen(text)+strlen(buffer)+1);
 
@@ -46,13 +49,11 @@ int main(int argc, char *argv[]) {
           text[0] = '\0';
         }
       }
-      free(text);
 
       for(size_t i = 0; i < size; i++) {
         printf("%s", output[i]);
         free(output[i]);
       }
-      free(output);
 
       if(argc == 2) {
         return 0;
@@ -60,6 +61,9 @@ int main(int argc, char *argv[]) {
       else {
         fclose(stream);
       }
+
+      free(output);
+      free(text);
     }
   }
 
